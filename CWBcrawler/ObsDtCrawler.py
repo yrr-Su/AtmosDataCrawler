@@ -29,8 +29,19 @@ class setting(_writter):
 
 	def crawl(self,stnam):
 		
-		## get meta information and set class parameter 
-		_st_no, _st_alt = self.info.loc[stnam].values
+		## get meta information and set class parameter
+		try:
+			_st_no, _st_alt = self.info.loc[stnam].values
+		except KeyError as k:
+			_err_msg = []
+			for _count, _df in self.info.groupby('county'):
+				_err_msg.append(f'{_count} :\n'+' '.join(_df.index.to_list())+'\n\n')
+			_err_msg = '\n'+''.join(_err_msg)+f'{k} not in the CWB station'
+
+			raise ValueError(_err_msg)
+
+
+
 		self.url_ori = f'http://e-service.cwb.gov.tw/HistoryDataQuery/DayDataController.do?command=viewMain&station={_st_no}&stname=&datepicker={{}}&altitude={_st_alt}m'
 		_dl_index = self.dl_index.strftime('%Y-%m-%d')
 
