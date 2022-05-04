@@ -15,21 +15,21 @@ Crawl the data from Central Weather Bureau
 CWBcrawler.<module>.setting(path=None, start=None, end=None, parallel=False,
 csv=True, excel=False, pickle=False)
 
-1. **path** : *str or pathlib-like, default is current path('.')*
-       Path of output file
-2. **start**: *str or datetime-like, default is the day before yesterday*
-       Left bound for download data
-3. **end**: *str or datetime-like, default is yesterday*
-       Right bound for download data
-4. **parallel**: *bool, default False*
-       Multipleprocessing for download long period data
-       The main code should run under  `if __name__ == '__main__':`
-5. **csv**: *bool, default False*
-       Output *.csv* file
-6. **excel**: *bool, default False*
-       Output *.xlsx* file
-7. **pickle**: *bool, default False*
-       Output *.pkl* file
+- **path** : *str or pathlib-like, default is current path('.')*
+	- Path of output file
+- **start**: *str or datetime-like, default is the day before yesterday*
+	- Left bound for download data
+- **end**: *str or datetime-like, default is yesterday*
+	- Right bound for download data
+- **parallel**: *bool, default False*
+	- Multipleprocessing for download long period data
+	- The main code should run under  `if __name__ == '__main__':`
+- **csv**: *bool, default False*
+	- Output *.csv* file
+- **excel**: *bool, default False*
+	- Output *.xlsx* file
+- **pickle**: *bool, default False*
+	- Output *.pkl* file
 
 ### sample code
 
@@ -70,8 +70,8 @@ https://e-service.cwb.gov.tw/HistoryDataQuery/index.jsp
 
 obsDtCrawler.setting.crawl(stnam)
 
-1. **stnam** : *str*
-       Station name in Chinese
+- **stnam** : *str*
+	- Station name in Chinese
 
 
 
