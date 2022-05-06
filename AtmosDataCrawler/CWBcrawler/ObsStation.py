@@ -1,5 +1,5 @@
 
-from . import _writter
+from AtmosDataCrawler.core._data_writter import _writter
 from pandas import date_range, concat, read_html, DataFrame
 from time import sleep
 from pathlib import Path
@@ -7,7 +7,7 @@ from pathlib import Path
 # https://e-service.cwb.gov.tw/HistoryDataQuery/index.jsp
 class setting(_writter):
 
-	nam = 'obsDt'
+	nam = 'CWB_ObsStation'
 
 	def _crawl(self,_tm):
 		_index = date_range(_tm,periods=24,freq='1h')
@@ -40,8 +40,6 @@ class setting(_writter):
 
 			raise ValueError(_err_msg)
 
-
-
 		self.url_ori = f'http://e-service.cwb.gov.tw/HistoryDataQuery/DayDataController.do?command=viewMain&station={_st_no}&stname=&datepicker={{}}&altitude={_st_alt}m'
 		_dl_index = self.dl_index.strftime('%Y-%m-%d')
 
@@ -69,3 +67,9 @@ class setting(_writter):
 		self._save_out(_df_out)
 
 		return _df_out
+
+	## update information data
+	def _setting__update_info(self):
+
+		## read csv file, then return dataframe
+		pass
