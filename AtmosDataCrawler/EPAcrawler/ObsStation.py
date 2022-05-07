@@ -14,7 +14,35 @@ class setting(_writter):
 		pass
 
 	def crawl(self,stnam):
-		pass
+		## get meta information and set class parameter
+		try:
+			_api   = self.info['api']
+			_st_id = self.info['df_id'].loc[stnam].values
+
+		except KeyError as k:
+			err_msg = 'error message'
+
+			raise ValueError(err_msg)
+
+		_dl_index = self.tm_index[[0,-1]].strftime('%Y-%m-%d %H:00')
+		self.url_ori = f'https://data.epa.gov.tw/api/v2/{_st_id}?format=json&offset={{}}&api_key={_api}'
+		self.url_ori += f'&filters=sitename,EQ,{stnam}|monitordate,GR,{_dl_index[0]}|monitordate,LE,{_dl_index[-1]}'
+		
+		## offset 1000
+
+
+
+
+		# resp = requests.get(main+filt)
+		# df = DataFrame(jsn.loads(resp.text)['records'])
+
+		# ['_links']
+
+
+
+
+
+
 
 
 
