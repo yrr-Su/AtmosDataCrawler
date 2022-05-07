@@ -127,6 +127,7 @@ dmypy.json
 test/
 *.csv
 _run_update.py
+info.json
 
 # Pyre type checker
 .pyre/

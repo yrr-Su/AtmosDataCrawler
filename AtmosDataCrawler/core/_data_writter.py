@@ -32,7 +32,8 @@ class _writter:
 		self.excel	= excel
 		self.pickle	= pickle
 
-		## get meta information
+		## meta information
+		self._update_info_path = Path('AtmosDataCrawler')/'core'/'utils'/self.nam
 		with (Path(__file__).parent/'utils'/self.nam/'info.pkl').open('rb') as f:
 			self.info = pkl.load(f)
 
