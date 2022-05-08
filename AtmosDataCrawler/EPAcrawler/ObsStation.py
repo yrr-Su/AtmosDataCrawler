@@ -2,22 +2,45 @@
 from AtmosDataCrawler.core._data_writter import _writter
 from pandas import date_range, concat, DataFrame
 import requests
-# from time import sleep
+import json as jsn
+from datetime import datetime as dtm
 from pathlib import Path
+import numpy as n
 
 # https://e-service.cwb.gov.tw/HistoryDataQuery/index.jsp
 class setting(_writter):
 
 	nam = 'EPA_ObsStation'
 
-	def _crawl(self,_tm):
-		pass
+	def _crawl(self,_off):
+		try:
+			print(f'crawl offset : {_off}')
+			_resp = requests.get(self.url_ori.format(_off))
+
+			if _resp.status_code>400:
+				_resp.raise_for_status()
+
+		except requests.exceptions.SSLError:
+			ImportError('SSL model not found, please activate conda enviroment (https://conda.io/activation)')
+
+		## parse the crawled text
+		_resp_dt = jsn.loads(_resp.text)['records']
+
+		if len(_resp_dt)==0:
+			return None
+		else:
+			return DataFrame(_resp_dt)
+
 
 	def crawl(self,stnam):
 		## get meta information and set class parameter
 		try:
 			_api   = self.info['api']
-			_st_id = self.info['df_id'].loc[stnam].values
+			_st_id = self.info['df_id'].loc[stnam].values[-1]
+			
+			## check out the api time
+			if dtm.now()>=dtm.strptime(self.info['api_end'],'%Y-%m-%d %X'):
+				raise ValueError('Update EPA api code')
 
 		except KeyError as k:
 			err_msg = 'error message'
@@ -27,23 +50,50 @@ class setting(_writter):
 		_dl_index = self.tm_index[[0,-1]].strftime('%Y-%m-%d %H:00')
 		self.url_ori = f'https://data.epa.gov.tw/api/v2/{_st_id}?format=json&offset={{}}&api_key={_api}'
 		self.url_ori += f'&filters=sitename,EQ,{stnam}|monitordate,GR,{_dl_index[0]}|monitordate,LE,{_dl_index[-1]}'
-		
+
+		## run
 		## offset 1000
+		if self.parallel:
+			from multiprocessing import Pool, cpu_count
+
+			cpu_num = cpu_count()
+			pool = Pool(cpu_num)
+
+			_off_ary = n.arange(0,cpu_num*1000,1000)
+
+			stop, _df_lst = True, []
+			while stop:
+				_crawl_lst = pool.map(self._crawl,_off_ary)
+
+				for _df in _crawl_lst:
+					if _df is None: 
+						stop = False
+
+				_df_lst.append(concat(_crawl_lst))
+
+				_off_ary += cpu_num*1000
 
 
+			pool.close()
+			pool.join()
 
+		else:
+			_df_lst, _off, _df = [], 0, True
+			
+			while _df is not None:
+				_df = self._crawl(_off)
+				_df_lst.append(_df)
+				
+				_off += 1000
 
-		# resp = requests.get(main+filt)
-		# df = DataFrame(jsn.loads(resp.text)['records'])
+		## output
+		_df_out = concat(_df_lst)
 
-		# ['_links']
+		## save data
+		print()
+		self._save_out(_df_out)
 
-
-
-
-
-
-
+		return _df_out
 
 
 	## update information data
@@ -51,7 +101,6 @@ class setting(_writter):
 		from pandas import read_csv
 		import pickle as pkl
 		import json as jsn
-		import numpy as n
 
 		## read json and csv, then return dict
 

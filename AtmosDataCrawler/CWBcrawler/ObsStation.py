@@ -13,9 +13,9 @@ class setting(_writter):
 		_index = date_range(_tm,periods=24,freq='1h')
 
 		try:
+			print(f'crawl date : {_tm}')
 			_df = read_html(self.url_ori.format(_tm),skiprows=2,header=0,na_values=['...'])[0].set_index(_index)
 
-			print(f'{_tm}')
 			sleep(.4)
 
 			return _df

@@ -12,7 +12,7 @@ Crawl the data from Central Weather Bureau
 
 ### setting parameter
 
-CWBcrawler.<module>.setting(path=None, start=None, end=None, parallel=False,
+AtmosDataCrawler.CWBcrawler.< module >.setting(path=None, start=None, end=None, parallel=False,
 csv=True, excel=False, pickle=False)
 
 - **path** : *str or pathlib-like, default is current path('.')*
@@ -36,17 +36,17 @@ csv=True, excel=False, pickle=False)
 ```python
 import sys
 from pathlib import Path
-sys.path.insert(1,Path('C:/')/'Users'/'your_name'/'Desktop'/'CWBcrawler')
+sys.path.insert(1,(Path('C:/')/'Users'/'your_name'/'Desktop'/'AtmosDataCrawler')._str)
 
 from datetime import datetime as dtm
 from datetime import timedelta as dtmdt
 
-from CWBcrawler import ObsDtCrawler
+from AtmosDataCrawler.CWBcrawler import ObsStation
 
 
-obs = ObsDtCrawler.setting(path=Path(),start=dtm(2022,4,11),end=dtm(2022,4,13),
-                           parallel=False,
-						   pickle=True,csv=True,excel=True)
+obs = ObsStation.setting(path=Path('.'),start=dtm(2022,4,11),end=dtm(2022,4,13),
+                         parallel=False,
+						 pickle=True,csv=True,excel=True)
 
 
 if __name__=='__main__':
@@ -60,7 +60,7 @@ if __name__=='__main__':
 
 
 
-### obsDtCrawler
+### ObsStation
 
 Observation data from CWB stations
 
@@ -68,7 +68,7 @@ https://e-service.cwb.gov.tw/HistoryDataQuery/index.jsp
 
 ---
 
-obsDtCrawler.setting.crawl(stnam)
+ObsStation.setting.crawl(stnam)
 
 - **stnam** : *str*
 	- Station name in Chinese
