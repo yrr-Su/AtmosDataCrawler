@@ -1,10 +1,8 @@
-# CWBcrawler
+# AtmosDataCrawler
 
 Author : yrr-Su 
 
 ## User Guide
-
-[toc]
 
 ### required package
 
@@ -83,13 +81,13 @@ csv=True, excel=False, pickle=False)
 
 ### CWBcrawler
 
+---
+
 #### ObsStation
 
 Observation data from CWB stations
 
 https://e-service.cwb.gov.tw/HistoryDataQuery/index.jsp
-
----
 
 ObsStation.setting.crawl(stnam)
 
@@ -98,6 +96,8 @@ ObsStation.setting.crawl(stnam)
 
 ### EPAcrawler
 
+---
+
 #### ObsStation
 
 Observation data from EPA stations API
@@ -105,8 +105,6 @@ Observation data from EPA stations API
 Have to update API once a year
 
 [首頁 | 環保署環境資料開放平臺 (epa.gov.tw)](https://data.epa.gov.tw/)
-
----
 
 ObsStation.setting.crawl(stnam)
 
