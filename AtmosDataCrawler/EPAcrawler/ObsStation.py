@@ -1,6 +1,6 @@
 
 from AtmosDataCrawler.core._data_writter import _writter
-from pandas import date_range, concat, DataFrame
+from pandas import date_range, concat, DataFrame, to_datetime
 import requests
 import json as jsn
 from datetime import datetime as dtm
@@ -73,7 +73,6 @@ class setting(_writter):
 
 				_off_ary += cpu_num*1000
 
-
 			pool.close()
 			pool.join()
 
@@ -86,8 +85,13 @@ class setting(_writter):
 				
 				_off += 1000
 
-		## output
-		_df_out = concat(_df_lst)
+		## data pre-process
+		_df_out = concat(_df_lst)[['monitordate','itemengname','concentration']]
+		_df_out = _df_out.loc[~_df_out.duplicated(subset=['monitordate','itemengname']).copy()].replace('x',n.nan)
+		_df_out['monitordate'] = to_datetime(_df_out['monitordate'].copy())
+		
+		_df_out = _df_out.pivot_table(index='monitordate',columns='itemengname',values='concentration',
+									  aggfunc=n.sum).astype(float).reindex(self.tm_index)
 
 		## save data
 		print()

@@ -31,7 +31,7 @@ class setting(_writter):
 		
 		## get meta information and set class parameter
 		try:
-			_st_no, _st_alt = self.info.loc[stnam].values
+			_st_no, _st_alt, _ = self.info.loc[stnam].values
 		except KeyError as k:
 			_err_msg = []
 			for _count, _df in self.info.groupby('county'):
