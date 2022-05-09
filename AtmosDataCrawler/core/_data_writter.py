@@ -11,6 +11,7 @@ import pickle as pkl
 class _writter:
 	
 	nam = None
+	out_info = 'crawl'
 
 	def __init__(self,path=None,start=None,end=None,parallel=False,
 				 csv=True,excel=False,pickle=False):
@@ -41,7 +42,7 @@ class _writter:
 	def _save_out(self,_df_out):
 
 		_st, _ed = self.dl_index.strftime('%Y%m%d')[[0,-1]]
-		_out_nam = f"{self.nam}_{_st}_{_ed}"
+		_out_nam = f"{self.out_info}_{self.nam}_{_st}_{_ed}"
 
 		if self.csv:
 			print(f'save : {_out_nam}.csv')

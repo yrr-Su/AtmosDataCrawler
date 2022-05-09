@@ -24,7 +24,11 @@ class setting(_writter):
 			ImportError('SSL model not found, please activate conda enviroment (https://conda.io/activation)')
 
 		## parse the crawled text
-		_resp_dt = jsn.loads(_resp.text)['records']
+		## process with non-valid json text
+		try:
+			_resp_dt = jsn.loads(_resp.text)['records']
+		except:
+			_resp_dt = []
 
 		if len(_resp_dt)==0:
 			return None
@@ -95,6 +99,7 @@ class setting(_writter):
 
 		## save data
 		print()
+		self.out_info = stnam
 		self._save_out(_df_out)
 
 		return _df_out

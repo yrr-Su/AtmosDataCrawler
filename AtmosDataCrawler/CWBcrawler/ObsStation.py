@@ -64,6 +64,7 @@ class setting(_writter):
 
 		## save data
 		print()
+		self.out_info = stnam
 		self._save_out(_df_out)
 
 		return _df_out
