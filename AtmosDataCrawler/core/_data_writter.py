@@ -4,6 +4,7 @@ from pandas import date_range
 from datetime import datetime as dtm
 from datetime import timedelta as dtmdt
 import pickle as pkl
+import json as jsn
 
 
 # parents class for write out the data
@@ -14,14 +15,16 @@ class _writter:
 	out_info = 'crawl'
 
 	def __init__(self,path=None,start=None,end=None,parallel=False,
-				 csv=True,excel=False,pickle=False):
+				 csv=True,excel=False,pickle=False,
+				 __old_ver_test=False):
 
 		## default parameter
 		path  = path  or Path('.')
-		start = start or (dtm.now()-dtmdt(days=2)).strftime('%Y-%m-%d')
-		end	  = end   or (dtm.now()-dtmdt(days=1)).strftime('%Y-%m-%d')
+		start = start or (dtm.now()-dtmdt(days=2))
+		end	  = end   or (dtm.now()-dtmdt(days=1))
 
 		## class parameter
+		self._old_ver = False
 		self.parallel = parallel
 		self.dl_index = date_range(start.strftime('%Y-%m-%d'),end.strftime('%Y-%m-%d'),freq='1d')
 		self.tm_index = date_range(self.dl_index[0],self.dl_index[-1]+dtmdt(days=1),
@@ -34,9 +37,14 @@ class _writter:
 		self.pickle	= pickle
 
 		## meta information
-		self._update_info_path = Path('AtmosDataCrawler')/'core'/'utils'/self.nam
-		with (Path(__file__).parent/'utils'/self.nam/'info.pkl').open('rb') as f:
-			self.info = pkl.load(f)
+		try:
+			with (Path(__file__).parent/'utils'/self.nam/'info.pkl').open('rb') as f:
+				self.info = pkl.load(f)
+				if __old_ver_test: raise ValueError
+		except ValueError:
+			with (Path(__file__).parent/'utils'/self.nam/'info.json').open('r') as f:
+				self.info = jsn.load(f)
+				self._old_ver = True
 
 	## write out data
 	def _save_out(self,_df_out):

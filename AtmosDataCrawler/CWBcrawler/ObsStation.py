@@ -28,7 +28,12 @@ class setting(_writter):
 			return DataFrame(index=_index)
 
 	def crawl(self,stnam):
-		
+
+		## process with old version python
+		if self._old_ver:
+			_jsn2df = self.info
+			self.info = DataFrame(_jsn2df['data'],index=_jsn2df['index'],columns=_jsn2df['columns'],)
+
 		## get meta information and set class parameter
 		try:
 			_st_no, _st_alt, _ = self.info.loc[stnam].values
@@ -69,8 +74,32 @@ class setting(_writter):
 
 		return _df_out
 
+
+
+
+class __update:
+
+	nam = 'CWB_ObsStation'
+
 	## update information data
-	def _setting__update_info(self):
+	def __init__(self):
+		from pandas import read_csv
+		import pickle as pkl
+		import json as jsn
+
+		## parameter 
+		_update_info_path = Path('AtmosDataCrawler')/'core'/'utils'/self.nam
 
 		## read csv file, then return dataframe
-		pass
+		with (_update_info_path/'info.csv').open('r',encoding='utf-8',errors='ignore') as f:
+			_info = read_csv(f).set_index('stNam')[['stNo','altitude','county']]
+
+		## output pickle
+		with (_update_info_path/'info.pkl').open('wb') as f:
+			pkl.dump(_info,f,protocol=pkl.HIGHEST_PROTOCOL)
+
+		## python version < 3.8, can not read the .pkl file of protocol 5
+		with (_update_info_path/'info.json').open('w',encoding='utf-8',errors='ignore') as f:
+
+			_info = jsn.loads(_info.to_json(orient='split'))
+			jsn.dump(_info,f)

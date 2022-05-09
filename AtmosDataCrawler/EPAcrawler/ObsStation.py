@@ -37,6 +37,12 @@ class setting(_writter):
 
 
 	def crawl(self,stnam):
+
+		## process with old version python
+		if self._old_ver:
+			_jsn2df = self.info['df_id']
+			self.info['df_id'] = DataFrame(_jsn2df['data'],index=_jsn2df['index'],columns=_jsn2df['columns'],)
+
 		## get meta information and set class parameter
 		try:
 			_api   = self.info['api']
@@ -105,11 +111,21 @@ class setting(_writter):
 		return _df_out
 
 
+
+
+
+class __update:
+
+	nam = 'EPA_ObsStation'
+
 	## update information data
-	def _setting__update_info(self):
+	def __init__(self):
 		from pandas import read_csv
 		import pickle as pkl
 		import json as jsn
+
+		## parameter 
+		_update_info_path = Path('AtmosDataCrawler')/'core'/'utils'/self.nam
 
 		## read json and csv, then return dict
 
@@ -118,7 +134,7 @@ class setting(_writter):
 		## 2. station information may be change
 		##	  download the information : 
 		##	  https://data.epa.gov.tw/dataset -> 資料目錄 -> 資料集清單下載 CSV -> 環保署開放資料清單.csv
-		with (self._update_info_path/'環保署開放資料清單.csv').open('r',encoding='utf-8',errors='ignore') as f:
+		with (_update_info_path/'環保署開放資料清單.csv').open('r',encoding='utf-8',errors='ignore') as f:
 			_df	 	= read_csv(f)[['資料集名稱','資料集代碼']]
 			_df_air = _df.loc[_df['資料集代碼'].str.find('AQX')==0].copy()
 
@@ -139,12 +155,20 @@ class setting(_writter):
 
 
 		## api and expiration date
-		with (self._update_info_path/'info.json').open('r',encoding='utf-8',errors='ignore') as f:
+		with (_update_info_path/'_info.json').open('r',encoding='utf-8',errors='ignore') as f:
 			_info = jsn.load(f)
 
 		_info['df_id'] = _df_out
 
-		with (self._update_info_path/'info.pkl').open('wb') as f:
+		with (_update_info_path/'info.pkl').open('wb') as f:
 			pkl.dump(_info,f,protocol=pkl.HIGHEST_PROTOCOL)
+
+		## python version < 3.8, can not read the .pkl file of protocol 5
+		with (_update_info_path/'info.json').open('w',encoding='utf-8',errors='ignore') as f:
+
+			_info['df_id'] = jsn.loads(_df_out.to_json(orient='split'))
+			jsn.dump(_info,f)
+
+
 
 
