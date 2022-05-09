@@ -23,7 +23,7 @@ class _writter:
 
 		## class parameter
 		self.parallel = parallel
-		self.dl_index = date_range(start,end,freq='1d')
+		self.dl_index = date_range(start.strftime('%Y-%m-%d'),end.strftime('%Y-%m-%d'),freq='1d')
 		self.tm_index = date_range(self.dl_index[0],self.dl_index[-1]+dtmdt(days=1),
 								   closed='left',freq='1h')
 
@@ -45,17 +45,17 @@ class _writter:
 		_out_nam = f"{self.out_info}_{self.nam}_{_st}_{_ed}"
 
 		if self.csv:
-			print(f'save : {_out_nam}.csv')
+			print(f'save : {_out_nam}.csv\n')
 			_df_out.to_csv(self.path/f'{_out_nam}.csv')
 
 		if self.excel:
-			print(f'save : {_out_nam}.xlsx')
+			print(f'save : {_out_nam}.xlsx\n')
 			from pandas import ExcelWriter
 			with ExcelWriter(self.path/f'{_out_nam}.xlsx') as f:
 				_df_out.to_excel(f,sheet_name=self.nam)
 
 		if self.pickle:
-			print(f'save : {_out_nam}.pkl')
+			print(f'save : {_out_nam}.pkl\n')
 			with (self.path/f'{_out_nam}.pkl').open('wb') as f:
 				pkl.dump(_df_out,f,protocol=pkl.HIGHEST_PROTOCOL)
 
