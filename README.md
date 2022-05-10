@@ -9,6 +9,9 @@ Author : yrr-Su
 * pandas
 * BeautifulSoup4
 * html5lib
+* openpyxl
+* lxml
+* requests 
 
 ## structure
 
