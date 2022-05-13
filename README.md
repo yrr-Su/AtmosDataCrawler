@@ -6,12 +6,12 @@ Author : yrr-Su
 
 ### required package
 
-* pandas
-* BeautifulSoup4
-* html5lib
-* openpyxl
-* lxml
-* requests 
+* pandas ≥ 1.3x
+* BeautifulSoup4  ≥ 4.10.0
+* html5lib  ≥ 1.1
+* openpyxl  ≥ 3.0.9
+* lxml  ≥ 4.7.1
+* requests  ≥ 2.26.0
 
 ## structure
 
