@@ -97,18 +97,23 @@ class setting(_writter):
 
 		## data pre-process
 		_df_out = concat(_df_lst)[['monitordate','itemengname','concentration']]
-		_df_out = _df_out.loc[~_df_out.duplicated(subset=['monitordate','itemengname']).copy()].replace('x',n.nan)
 		_df_out['monitordate'] = to_datetime(_df_out['monitordate'].copy())
+		_df_prcs_out = _df_out.loc[~_df_out.duplicated(subset=['monitordate','itemengname'])].replace('x',n.nan)
 		
-		_df_out = _df_out.pivot_table(index='monitordate',columns='itemengname',values='concentration',
-									  aggfunc=n.sum).astype(float).reindex(self.tm_index)
+		try:
+			_fout = _df_prcs_out.pivot_table(index='monitordate',columns='itemengname',values='concentration',
+											 aggfunc=n.sum).astype(float).reindex(self.tm_index)
+		except:
+			print('_df_out : got duplicated data error, try to crawl the data again')
+			breakpoint()
+
 
 		## save data
 		print()
 		self.out_info = stnam
-		self._save_out(_df_out)
+		self._save_out(_fout)
 
-		return _df_out
+		return _fout
 
 
 
