@@ -14,7 +14,7 @@ class setting(_writter):
 
 		try:
 			print(f'crawl date : {_tm}')
-			_df = read_html(self.url_ori.format(_tm),skiprows=2,header=0,na_values=['...'])[0].set_index(_index)
+			_df = read_html(self.url_ori.format(_tm),skiprows=2,header=0,na_values=['...','V'])[0].set_index(_index)
 
 			sleep(.4)
 
