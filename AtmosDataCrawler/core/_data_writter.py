@@ -27,8 +27,7 @@ class _writter:
 		self._old_ver = False
 		self.parallel = parallel
 		self.dl_index = date_range(start.strftime('%Y-%m-%d'),end.strftime('%Y-%m-%d'),freq='1d')
-		self.tm_index = date_range(self.dl_index[0],self.dl_index[-1]+dtmdt(days=1),
-								   closed='left',freq='1h')
+		self.tm_index = date_range(self.dl_index[0],self.dl_index[-1]+dtmdt(days=1),freq='1h')[:-1]
 
 		## output parameter
 		self.path	= path
