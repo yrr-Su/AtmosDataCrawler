@@ -66,6 +66,7 @@ class setting(_writter):
 
 		## output
 		_df_out = concat(_df_lst).reindex(self.tm_index)
+		_df_out.index.name = 'Time'
 
 		## save data
 		print()
