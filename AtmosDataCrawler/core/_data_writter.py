@@ -30,7 +30,7 @@ class _writter:
 		self.tm_index = date_range(self.dl_index[0],self.dl_index[-1]+dtmdt(days=1),freq='1h')[:-1]
 
 		## output parameter
-		self.path	= path
+		self.path	= Path(path)
 		self.csv	= csv
 		self.excel	= excel
 		self.pickle	= pickle
