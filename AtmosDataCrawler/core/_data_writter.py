@@ -50,7 +50,8 @@ class _writter:
 
 		_st, _ed = self.dl_index.strftime('%Y%m%d')[[0,-1]]
 		_out_nam = f"{self.out_info}_{self.nam}_{_st}_{_ed}"
-
+		self.path.mkdir(exist_ok=True,parents=True)
+	
 		if self.csv:
 			print(f'save : {_out_nam}.csv\n')
 			_df_out.to_csv(self.path/f'{_out_nam}.csv')
