@@ -65,7 +65,7 @@ class setting(_writter):
 				_df_lst.append(_df)
 
 		## output
-		_df_out = concat(_df_lst).reindex(self.tm_index)
+		_df_out = concat(_df_lst).reindex(self.tm_index).apply(to_numeric,errors='coerce')
 		_df_out.index.name = 'Time'
 
 		## save data
