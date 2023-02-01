@@ -1,6 +1,6 @@
 
 from AtmosDataCrawler.core._data_writter import _writter
-from pandas import date_range, concat, read_html, DataFrame
+from pandas import date_range, concat, DataFrame, to_numeric, read_html
 from time import sleep
 from pathlib import Path
 

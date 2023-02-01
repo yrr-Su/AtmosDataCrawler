@@ -1,6 +1,6 @@
 
 from pathlib import Path
-from pandas import date_range
+from pandas import date_range, to_datetime
 from datetime import datetime as dtm
 from datetime import timedelta as dtmdt
 import pickle as pkl
@@ -20,8 +20,8 @@ class _writter:
 
 		## default parameter
 		path  = path  or Path('.')
-		start = start or (dtm.now()-dtmdt(days=2))
-		end	  = end   or (dtm.now()-dtmdt(days=1))
+		start = to_datetime(start) or (dtm.now()-dtmdt(days=2))
+		end	  = to_datetime(end)   or (dtm.now()-dtmdt(days=1))
 
 		## class parameter
 		self._old_ver = False
