@@ -45,7 +45,7 @@ class setting(_writter):
 
 			raise ValueError(_err_msg)
 
-		self.url_ori = f'http://e-service.cwb.gov.tw/HistoryDataQuery/DayDataController.do?command=viewMain&station={_st_no}&stname=&datepicker={{}}&altitude={_st_alt}m'
+		self.url_ori = f'https://e-service.cwb.gov.tw/HistoryDataQuery/DayDataController.do?command=viewMain&station={_st_no}&stname=&datepicker={{}}&altitude={_st_alt}m'
 		_dl_index = self.dl_index.strftime('%Y-%m-%d')
 
 		## run
