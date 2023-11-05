@@ -2,7 +2,8 @@
 
 
 __all__ = [
-			'ObsStation'
+			'ObsStation',
+			'ObsStationThread'
 
 
 
